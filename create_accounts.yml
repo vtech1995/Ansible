@@ -1,0 +1,26 @@
+# Playbook to create a set of three expiring test accounts.
+# Uses a loop operating against a static list of acounts.
+---
+- hosts: centos1
+  vars:
+    account_password: Netapp1!
+  become: True
+  tasks:
+    - name: Add test group
+      group:
+        name: test
+        gid: 1100
+    - name: Add test accounts
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        comment: "{{ item.comment }}"
+        group: test
+        # Note: Accounts will expire on the next day.
+        expires: "{{ ansible_date_time.epoch | int + 86400 }}"
+        password: "{{ account_password | password_hash('sha512') }}"
+        update_password: on_create
+      loop:
+        - { name: 'test1', uid: 1101, comment: 'test account 1' }
+        - { name: 'test2', uid: 1102, comment: 'test account 2' }
+        - { name: 'test3', uid: 1103, comment: 'test account 3' }

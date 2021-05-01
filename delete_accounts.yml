@@ -1,0 +1,26 @@
+# Playbook for removing expired test accounts. Loops over all accounts,
+# but only deletes the accounts that match the account prefix and that
+# have expired.
+---
+- hosts: centos1
+  vars:
+    account_prefix: test       # prefix for account usernames
+  become: True
+  tasks:
+    - name: Calculate epoch days
+      set_fact:
+        epoch_days: "{{ (ansible_date_time.epoch | int / 86400) | int }}"
+    - name: Print epoch days
+      debug:
+        var: epoch_days
+    - name:  Get account expiration information
+      getent:
+        database: shadow
+    - name: Delete expired {{ account_prefix }}N accounts
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ ansible_facts.getent_shadow | list }}"
+      when: (item | regex_search("^%s" | format(account_prefix))) and
+            (ansible_facts['getent_shadow'][item][6] <= epoch_days)

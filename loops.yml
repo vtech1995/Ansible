@@ -1,0 +1,32 @@
+# Playbook to demo basic syntax for several different types of loops.
+---
+- hosts: centos1
+  vars:
+    sample_dict:         # sample dictionary (hash) data
+      key1: value1
+      key2: value2
+      key3: value3
+    sample_list:
+      - one
+      - two
+      - three
+  tasks:
+    - name: loop over list items using "with_items"
+      debug:
+        msg: "{{ item }}"
+      with_items:
+        - one
+        - two
+        - three
+    - name: loop over list items using "loop"
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ sample_list }}"
+    - name: loop over dictionary using "with_dict"
+      debug:
+        msg: "{{ item.key }} - {{ item.value }}"
+      with_dict: "{{ sample_dict }}"
+    - name: loop over dictionary using "loop"
+      debug:
+        msg: "{{ item.key }} - {{ item.value }}"
+      loop: "{{ sample_dict | dict2items }}"

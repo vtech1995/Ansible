@@ -1,0 +1,39 @@
+# Playbook demonstrating "import_*" and "include_*" statement usage.
+---
+- name: Import another playbook
+  import_playbook: files/greeting.yml
+  vars:
+    # An input variable for the imported playbook.
+    greeting: Hello
+- hosts: centos1
+  gather_facts: true
+  vars:
+    var1: one
+  # import variable declarations from other files at playbook parse time.
+  vars_files: 
+    - files/alpha.yml
+    - files/beta.yml
+  tasks:
+    - name: Dynamically load variables from a file encountered during playbook execution.
+      include_vars: files/gamma.yml
+    - name: Statically import a task at playbook parse time
+      import_tasks: files/print.yml
+      vars:
+        # input variable for the imported task.
+        value: "var1 = {{ var1 }}"
+    - name: Statically import the task again, but only if the var2 variable is defined
+      import_tasks: files/print.yml
+      vars:
+        value: "var2 = {{ var2 }}"
+      when: var2 is defined
+    - name: a plain task interspersed with import/include tasks.
+      debug:
+        msg: "var3 = {{ var3 }}"
+    - name: Use a loop to dynamically include the task during playbook execution
+      include_tasks: files/print.yml
+      vars:
+        value: "item = {{ item }}"
+      loop:
+       - "{{ var4 }}"
+       - "{{ var5 }}"
+       - "{{ var6 }}"

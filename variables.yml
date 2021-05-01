@@ -1,0 +1,14 @@
+# Playbook to write "Hello World" to the terminal.
+---
+- hosts: centos1
+  vars:
+    hellomsg: Hello World from playbook global variable
+  tasks:
+    - name: Print Hello Message using debug var
+      debug:
+        var: hellomsg
+    - name: Print Hello Message using debug msg
+      vars:
+        hellomsg: Hello World from playbook task variable
+      debug:
+        msg: "hellomsg = {{ hellomsg }}"

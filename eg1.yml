@@ -1,0 +1,23 @@
+- name: EG of condition
+  hosts: all
+  gather_facts: true
+  tasks: 
+   - name: install ftp
+     yum: 
+      name: ftp
+      state: installed 
+     when: ansible_distribution == 'CentOS'
+   
+   - name: install httpd
+     yum:
+      name: httpd
+      state: installed
+     when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+   
+   - name: install vsftpd
+     yum:
+      name: vsftpd
+      state: installed
+     when: ansible_distribution == 'CentOS' or ansible_distribution_major_version == '7'
+
+   

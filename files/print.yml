@@ -1,0 +1,4 @@
+# task to print the contents of the inputted "value" variable.
+- name: print supplied value
+  debug:
+   msg: "printing: {{ value }}"

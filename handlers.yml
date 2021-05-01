@@ -1,0 +1,17 @@
+# Playbook to demonstrate a handler. Only starts the web server if the
+# web server package was installed during the current play execution.
+---
+- hosts: centos1
+  become: True
+  tasks:
+    - name: Install httpd package
+      yum:
+        name: httpd
+        state: present
+      notify: Start httpd
+  handlers:
+    - name: Start httpd
+      service:
+        name: httpd
+        state: started
+      become: True

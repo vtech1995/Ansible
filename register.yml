@@ -1,0 +1,22 @@
+# Playbook that shows how to use the "register" statement to access a
+# task's returned results.
+---
+- hosts: centos1
+  vars:
+    searchpath: /lab
+  tasks:
+    - name: Find *.txt files located in /lab
+      find:
+        paths: "{{ searchpath }}"
+        patterns: '*.txt'
+        recurse: no
+      register: results
+    - name: Print all find results
+      debug:
+        var: results
+    - name: Print full path file name of the first returned file
+      debug:
+        msg: "First returned file = {{ results['files'][0]['path'] }}"
+    - name: Print short file name of the first returned file
+      debug:
+        msg: "First returned file = {{ results.files[0].path | basename }}"

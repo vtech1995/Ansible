@@ -1,0 +1,22 @@
+# Playbook for creating and populating the /lab directory used by
+# other exercises.
+---
+- hosts: centos1
+  tasks:
+    - name: Create /lab directory
+      become: yes
+      file:
+        path: /lab
+        state: directory
+        mode: 0777
+    - name: Create sample files
+      file:
+        path: "/lab/{{ item }}"
+        state: touch
+        mode: 0644
+      with_items:
+        - alpha.txt
+        - beta.txt
+        - gamma.txt
+        - delta.conf
+        - epsilon.dat

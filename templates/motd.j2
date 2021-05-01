@@ -1,0 +1,12 @@
+Welcome to {{ ansible_fqdn }}!
+
+Use of this system is restricted to authorized {{ audience }}
+users only!
+
+Host OS = {{ ansible_distribution }} {{ ansible_distribution_version }} {{ ansible_architecture }}
+Kernel = {{ ansible_kernel }}
+Host Type = {{ ansible_product_name | replace("Platform", "Machine") }}
+Total RAM = {{ ansible_memtotal_mb }} MB
+Total Processor Cores = {{ ansible_processor_vcpus }}
+Processor Type = {{ ansible_processor[2] }}
+

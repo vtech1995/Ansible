@@ -1,0 +1,5 @@
+---
+hellomsg: Hello World from group_vars/linux.yml file
+ansible_user: ansible
+ansible_ssh_pass: Netapp1!
+ansible_port: 22

@@ -1,0 +1,26 @@
+# Enhanced playbook to create N expiring test accounts. Loops over a range of integers.
+---
+- hosts: centos1
+  vars:
+    account_password: Netapp1!  # password for created accounts
+    account_prefix: test        # prefix for account usernames, also serves as group name
+    account_base_uid: 1100      # starting of range for account uids, first account uid will be value + 1
+    account_count: 6            # number of accounts to create
+    account_lifetime: 86400     # seconds that acoount should be valid, default 1 day
+    group_id: 1100              # gid for account group
+  become: True
+  tasks:
+    - name: Add "{{ account_prefix }}" group
+      group:
+        name: "{{ account_prefix }}"
+        gid: "{{ group_id }}"
+    - name: Add {{ account_prefix }}N accounts
+      user:
+        name: "{{ '%s%d' | format(account_prefix, item) }}"
+        uid: "{{ account_base_uid | int + item }}"
+        comment: "{{ '%s account %d' | format(account_prefix, item) }}"
+        group: "{{ account_prefix }}"
+        expires: "{{ ansible_date_time.epoch | int + (account_lifetime | int)}}"
+        password: "{{ account_password | password_hash('sha512') }}"
+        update_password: on_create
+      loop: "{{ range(1, account_count | int + 1) | list }}"

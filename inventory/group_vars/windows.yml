@@ -1,0 +1,8 @@
+---
+hellomsg: Hello World from group_vars/windows.yml
+ansible_user: Administrator@DEMO.NETAPP.COM
+ansible_password: Netapp1!
+ansible_connection: winrm
+ansible_winrm_transport: kerberos
+ansible_port: 5985
+ansible_winrm_message_encryption: auto

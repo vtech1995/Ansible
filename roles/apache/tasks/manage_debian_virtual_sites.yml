@@ -1,0 +1,23 @@
+# Tasks for Apache virtual site management, these are extra steps only
+# required for Debian-based distributions.
+---
+- name: Debian - Enable the virtual host "vhost".
+  command: /usr/sbin/a2ensite vhost.conf
+  register: results
+  changed_when: false
+- name: Debian - Check if virtual host "vhost" was just enabled.
+  debug:
+    msg: This virtual host was just enabled, apache2 service reload will be required.
+  changed_when: true
+  notify: "{{ 'reload apache2' if ansible_facts['os_family']|lower == 'debian' }}"
+  when: results.stdout | regex_search('Enabling site [-\\w]+')
+- name: Debian - Disable the default virtual host "000-default".
+  command: /usr/sbin/a2dissite 000-default.conf
+  register: results
+  changed_when: false
+- name: Debian - Check if virtual host "000-default" was just disabled.
+  debug:
+    msg: This virtual host was just disabled, apache2 service reload will be required.
+  changed_when: true
+  notify: reload apache2
+  when: results.stdout | regex_search('Site [-\\w]+ disabled')

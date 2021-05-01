@@ -1,0 +1,30 @@
+[all:vars]
+hellomsg=Hello World from inventory file
+
+[centos:children]
+centos_east
+centos_west
+
+[centos_east]
+centos1
+
+[centos_west]
+centos2
+
+[control]
+ansible ansible_host=192.168.0.188
+
+[linux:children]
+centos
+ubuntu
+
+[ontap]
+192.168.0.101 clustername=cluster1
+192.168.0.102 clustername=cluster2
+
+[ubuntu]
+ubuntu1
+
+[windows]
+dc1
+jumphost

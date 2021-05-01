@@ -1,0 +1,16 @@
+# Playbook for "Playbooks" exercise, with added 2nd task
+---                               # Indicates start of a YAML document
+- hosts: centos                   # The start of a play plus the play target hosts
+  tasks:                          # Indicates the start of the playbook's task list
+    - name: Create /lab directory # The first task, plus the tasks's (optional) name
+      become: yes                 # Indicates the task should escalate privilege
+      file:                       # The name of the module this task uses
+        path: /lab                # The path of the object to create
+        state: directory          # Object is a directory and should exist
+        mode: 0755                # file permission mode for object
+    - name: Update application.conf
+      become: yes
+      lineinfile:
+        path: /lab/application.conf
+        line: state=start
+        create: yes

@@ -1,0 +1,8 @@
+# Playbook to demonstrate a simple conditional
+---
+- hosts: linux
+  tasks:
+    - name: Check Linux OS family
+      debug:
+        msg: Target is a RHEL-based host
+      when: ansible_facts['os_family']|lower == 'redhat'

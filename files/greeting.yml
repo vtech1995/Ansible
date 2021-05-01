@@ -1,0 +1,12 @@
+# playbook to print a simple introduction
+---
+- hosts: centos2
+  vars:
+    ansible_user: ansible
+    ansible_ssh_pass: Netapp1!
+    ansible_port: 22
+    var7: seven
+  tasks:
+    - name: Introduce yourself
+      debug:
+        msg: "{{ greeting }} from {{ ansible_facts.fqdn }}"

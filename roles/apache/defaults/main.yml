@@ -1,0 +1,5 @@
+# defaults file for apache
+---
+vhost_user: user1
+vhost_group: users
+vhosts_root_directory: /var/www/vhosts

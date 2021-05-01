@@ -1,0 +1,20 @@
+- name: EG of condition
+  hosts: all
+  gather_facts: true
+  tasks: 
+   - name: install vsftpd
+     yum:
+      name: vsftpd
+      state: installed
+     when: (ansible_distribution == 'CentOS' or ansible_distribution_major_version == '7') or (ansible_distribution == 'Redhat' or ansible_distribution_major_version == '7')
+
+
+   - name: intalled httpd another style to write and 
+     yum: 
+       name: httpd
+       state: installed
+     when: 
+      - ansible_distribution == 'CentOS' 
+      -  ansible_distribution_major_version == '7'
+
+   

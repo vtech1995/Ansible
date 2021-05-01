@@ -1,0 +1,22 @@
+# Playbook for "vault" demonstration
+---
+- hosts: centos1
+  gather_facts: false
+  vars:
+    searchpath: /lab
+    ansible_user: ansible
+    ansible_ssh_pass: "{{ password_ansible_ssh_pass }}"
+    ansible_port: 22
+  vars_files: 
+    - secrets/password.yml
+  tasks:
+    - name: Find *.txt files located in /lab
+      find:
+        paths: "{{ searchpath }}"
+        patterns: '*.txt'
+        recurse: no
+      register: results
+    - name: Print names of found files
+      debug:
+        msg: "found file = {{ results['files'][item]['path'] }}"
+      loop: "{{ range(0, (results.files | length)) | list }}"

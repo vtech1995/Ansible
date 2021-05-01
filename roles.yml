@@ -1,0 +1,23 @@
+# Playbook that uses a role to install & configure apache with a virtual host
+# named 'vhost'. The playbook then goes on to further customize vhost's
+# default index.html page.
+---
+- hosts: linux
+  become: True
+  roles:
+    - role: apache
+      vars:
+        vhost_user: user
+  tasks:
+    - name: Read config file for virtual host "vhost".
+      vars:
+        vhost_config: "{{ '/etc/httpd/conf.d/vhost.conf' if ansible_facts['os_family']|lower == 'redhat' else '/etc/apache2/sites-enabled/vhost.conf' }}"
+      slurp:
+        src: "{{ vhost_config }}"
+      register: vhost_cfg_contents
+    - name: Further customize index.html file for virtual host "vhost".
+      lineinfile:
+        path: "{{ vhost_cfg_contents['content'] | b64decode | regex_findall('DocumentRoot ([-/\\w]+)') | first }}/index.html"
+        regex: '^\s*\<h2\>'
+        line: '    <h2>Custom page content added by the roles.yml playbook after the "apache" role completed.</h2>'
+        insertbefore: '^\s*\<\/body\>'

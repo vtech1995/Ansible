@@ -1,0 +1,11 @@
+# Apache web server  package installation steps for Debian based distributions.
+---
+- name: Install Apache "apache2" package.
+  yum:
+    name: apache2
+    state: present
+- name: Enable "apache2" service.
+  service:
+    name: apache2
+    state: started
+    enabled: True
