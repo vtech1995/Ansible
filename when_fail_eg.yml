@@ -1,0 +1,21 @@
+- name: Example of when fail 
+  hosts: centos 
+  become: true
+  tasks: 
+     - name: run sripts
+       shell: /root/run.sh
+       register: xyz
+     
+     - debug: 
+         var: xyz.stdout_lines 
+    
+     - name: prepare db update
+       debug: 
+          msg: " Database going to upgrade"
+       failed_when: "'password missing' == xyz.stdout"
+   
+     - debug: 
+         msg: "upgrade database" 
+# ansible centos -m copy -a 'src=run.sh dest=/root/ mode=0755' -b
+#to copy scripts to server
+#Failed when will stop the playbook if condition is true

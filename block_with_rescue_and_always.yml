@@ -1,0 +1,24 @@
+- name:  block with rescue
+  hosts: centos 
+  become: true
+  tasks: 
+   - block: 
+      - debug: 
+           msg: "start db "
+      
+      - name: Upgrade db
+        get_url: 
+           url: https://www.w3schools.com/html/html_examples.asp
+           dest: /tmp
+
+
+      - debug: 
+          msg: "Database Update Successfully"
+       
+     rescue: 
+      - debug: 
+            msg: "Rollout Database Server" 
+   
+     always: 
+      - debug: 
+           msg: "Always block  restart db"

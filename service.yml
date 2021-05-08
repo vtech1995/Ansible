@@ -1,12 +1,16 @@
 - name: Checking service status 
   hosts: centos
   gather_facts: false
+  become: yes
   tasks: 
    - name: check service  
      command: systemctl is-active crond 
      register: xyz
      ignore_errors: yes
 
+   - debug:
+        var: xyz.stdout
+   
    - name: start service if is not running
      service:
          name:  crond

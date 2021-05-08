@@ -1,0 +1,17 @@
+- name: existance of file 
+  hosts: centos 
+  tasks: 
+   - name: check file existance 
+     stat:
+       path: /tmp/exam.txt
+     register: xyz
+        
+   - debug: 
+       var: xyz.stat.exists 
+   
+   - name: if file doesn't exist
+     copy: 
+        content: " Hi file"
+        dest: /tmp/exam.txt
+     when: xyz.stat.exists == false
+  

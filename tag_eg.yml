@@ -1,0 +1,18 @@
+- name: Tag example for tasks
+  hosts: centos
+  become: true
+  tasks: 
+    - name: intall ftp 
+      yum:
+         name:  ftp
+         state: latest 
+      tags: [ 'never', 'cherry']
+    
+    - name: install httpd
+      yum: 
+       name: httpd
+       state: latest
+      tags: ['never' , 'jerry' ]
+# task mentioned with never will not run till the tag is not mentioned.
+# 
+

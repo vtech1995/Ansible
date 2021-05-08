@@ -1,0 +1,17 @@
+- name: Examples of block without Rescue
+  hosts: centos
+  become: true 
+  tasks: 
+   - block: 
+       
+      - name: install ftp 
+        yum: 
+         name: ftp
+         state: installed 
+    
+      - name: install httpd
+        yum: 
+          name: httpd
+          state: installed 
+     when: ansible_distribution == 'RedHat'
+  

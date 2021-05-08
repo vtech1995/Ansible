@@ -1,0 +1,9 @@
+- name: Example of hosts update 
+  hosts: centos
+  become: true
+  tasks: 
+     - name: template push 
+       template: 
+           src: hosts.j2
+           dest: /etc/myhosts
+       when: inventory_hostname in groups['centos']

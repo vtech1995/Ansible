@@ -1,0 +1,41 @@
+- name: Example of notify and handler 
+  hosts: centos 
+  become: True
+  tasks: 
+    - name: Deploy the app
+      copy: 
+        src: httpd.conf
+        dest: /tmp/web.confd
+      notify:
+          -  restart-apache
+          -  email_to
+#Writing multiple notify. 
+  
+    - name: this is simple 
+      file: 
+         path: /tmp/abc
+         state: touch 
+    
+    - name: install postfix
+      yum: 
+        name: postfix
+        state: installed 
+      notify: install_postfix
+      
+  handlers:
+         - name: httpd restart
+           service:
+                 name: httpd
+                 state: restarted
+           listen: restart-apache
+#if notify label and name of handler is same listen is not required.  
+         - name: install_postfix 
+           service: 
+               name: postfix
+               state: restarted
+          
+
+         - name: send_email
+           command: mail -s "TESTING"  root@localhost
+           listen: email_to
+           delegate_to: localhost

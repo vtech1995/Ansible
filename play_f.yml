@@ -1,0 +1,7 @@
+- hosts: centos 
+  become: yes 
+  tasks: 
+    - name: motd file
+      template: 
+        src: class.j2
+        dest: /etc/motd
