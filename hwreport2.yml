@@ -1,0 +1,17 @@
+---
+- name: generating report 
+  hosts: centos
+  tasks: 
+      - name: check the disk stat
+        stat: 
+          path: /dev/sdb
+        register: file    
+      
+      
+      
+      - name: copy firts file 
+        template: 
+          src: hwreport_with_jinja_condition.txt
+          dest: /root/hwreport.txt
+  
+

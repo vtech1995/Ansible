@@ -1,0 +1,6 @@
+FQDN={{ ansible_fqdn }}
+IPADDRESS={{ ansible_default_ipv4.address }}
+TOTAL_memory={{ ansible_memtotal_mb }}
+BIOS_VERSION= {{ ansible_bios_version }}
+sda_size_total= {{ ansible_devices.sda.size }}
+sdb_size_total= {{ ansible_devices.sdb.size }}

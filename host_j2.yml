@@ -4,6 +4,6 @@
   tasks: 
      - name: template push 
        template: 
-           src: hosts.j2
+           src: hosts_mod.j2
            dest: /etc/myhosts
        when: inventory_hostname in groups['centos']

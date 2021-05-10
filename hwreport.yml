@@ -1,0 +1,16 @@
+---
+- name: generating report 
+  hosts: centos
+  tasks: 
+    - block: 
+         - name: copy firts file 
+           template: 
+                src: hwreport.txt
+                dest: /root/hwreport.txt
+  
+      rescue: 
+       - name: copy second file
+         template: 
+             src: hwreport.txt2
+             dest: /root/hwreport.txt
+
